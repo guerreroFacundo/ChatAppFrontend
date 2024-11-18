@@ -1,38 +1,30 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { TextField, Button, Container, Typography, Box, Card, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { authService } from '../services/auth';
 
-function LoginComponent({ setAuthToken, setCurrentUser }) {
+function LoginComponent() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const baseURL = `${process.env.REACT_APP_API_BASE_URL}/api/users`;
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${baseURL}/login`, {
-        username,
-        password,
-      });
-
-      const { token, username: loggedUsername, userId, type } = response.data;
-
+      const response = await authService.login(username, password);
+      const { token, userId, type } = response;
       const fullToken = `${type} ${token}`;
-      localStorage.setItem("authToken", fullToken);
-      localStorage.setItem("userId", userId);
-      localStorage.setItem("username", loggedUsername);
-      setAuthToken(fullToken);
-      setCurrentUser({ id: userId, username: loggedUsername });
 
+      await login(fullToken, userId, username);
       navigate('/chat-layout');
+
     } catch (error) {
       console.log(error);
       if (error.response && error.response.data) {
-        const errorMessage = error.response.data;
-        setError(errorMessage);
+        setError(error.response.data);
       } else {
         const status = error.response?.status;
         switch (status) {

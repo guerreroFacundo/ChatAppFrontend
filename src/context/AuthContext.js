@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext } from 'react';
 import { authService } from '../services/auth';
 
 const AuthContext = createContext(null);
@@ -10,11 +10,13 @@ export const AuthProvider = ({ children }) => {
         username: localStorage.getItem('username')
     });
 
-    const login = async (credentials) => {
-        const data = await authService.login(credentials);
-        authService.setAuthData(data.token, data.userId, data.username);
-        setAuthToken(data.token);
-        setCurrentUser({ id: data.userId, username: data.username });
+    const login = async (token, userId, username) => {
+        return new Promise((resolve) => {
+            authService.setAuthData(token, userId, username);
+            setAuthToken(token);
+            setCurrentUser({ id: userId, username: username });
+            resolve();
+        });
     };
 
     const logout = () => {

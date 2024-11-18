@@ -4,95 +4,137 @@ Una aplicación de chat en tiempo real construida con React y Material-UI que pe
 
 ## Características
 
-- Autenticación de usuarios
-- Chat en tiempo real
-- Búsqueda de conversaciones
-- Interfaz oscura moderna
-- Sistema de respuestas a mensajes
-- Indicadores de estado de conexión
-- Interfaz responsive
+- Autenticación de usuarios segura
+- Chat en tiempo real con WebSocket
+- Sistema de mensajería instantánea
+- Interfaz oscura moderna y personalizable
+- Sistema de respuestas a mensajes con threading
+- Indicadores de estado de conexión en tiempo real
+- Diseño totalmente responsive
+- Búsqueda avanzada de conversaciones
+- Notificaciones en tiempo real
+- Emojis y reacciones a mensajes
 
 ## Tecnologías Utilizadas
 
-- React.js
-- Material-UI
+- React 18
+- Material-UI v5
 - WebSocket (@stomp/stompjs)
-- React Router
+- React Router v6
 - Axios
-- Bootstrap
-- Socket.io
+- Context API
+- Custom Hooks
+- Jest para testing
 
 ## Requisitos Previos
 
-- Node.js (versión 14 o superior)
-- NPM (incluido con Node.js)
+- Node.js (versión 16 o superior)
+- NPM (versión 8 o superior)
+- Conexión a Internet
 
 ## Configuración del Proyecto
 
 1. Clona el repositorio:
-```git clone https://github.com/guerreroFacundo/ChatAppFrontend.git```
+```bash
+git clone https://github.com/guerreroFacundo/ChatAppFrontend.git
+```
 
 2. Navega al directorio del proyecto:
-```cd chat-application```
+```bash
+cd chat-application
+```
 
 3. Instala las dependencias:
-```npm install```
+```bash
+npm install
+```
 
-4. Crea un archivo .env en la raíz del proyecto y configura las variables de entorno necesarias:
+4. Configura las variables de entorno:
+Crea un archivo `.env` en la raíz del proyecto con:
+```
 REACT_APP_API_URL=tu_url_api
 REACT_APP_WS_URL=tu_url_websocket
+```
 
-
-5. Inicia la aplicación en modo desarrollo:
-```npm start```
+5. Inicia la aplicación:
+```bash
+npm start
+```
 
 La aplicación estará disponible en http://localhost:3000
 
 ## Estructura del Proyecto
 ```
 src/
-├── components/ # Componentes React
-├── context/ # Contextos de React
-├── css/ # Estilos CSS
-├── hooks/ # Hooks personalizados
-├── services/ # Servicios de API y autenticación
-└── utils/ # Utilidades y helpers
+├── components/     # Componentes React reutilizables
+│   ├── routing/   # Componentes de enrutamiento
+├── context/       # Contextos de React (Auth, Theme, etc.)
+├── css/           # Estilos modulares
+├── hooks/         # Hooks personalizados
+├── services/      # Servicios de API y autenticación
+└── utils/         # Utilidades y helpers
 ```
 
 ## Componentes Principales
 
-- `ChatLayout`: Layout principal de la aplicación
-- `ChatComponent`: Maneja la lógica del chat
-- `MessageList`: Lista de mensajes
-- `InputArea`: Área de entrada de mensajes
-- `LoginComponent`: Manejo de autenticación
+- `ChatLayout`: Estructura principal de la aplicación
+- `ChatComponent`: Gestión de la lógica del chat
+- `MessageList`: Visualización de mensajes
+- `InputArea`: Entrada de mensajes con funciones avanzadas
+- `LoginComponent`: Sistema de autenticación
+- `ReplyBox`: Sistema de respuestas
+- `MessageBubble`: Visualización de mensajes individuales
 
-## Hooks Personalizados
+## Scripts Disponibles
 
-- `useAuth`: Manejo de autenticación
-- `useChat`: Lógica del chat y WebSocket
+- `npm start`: Inicia el servidor de desarrollo
+- `npm test`: Ejecuta las pruebas
+- `npm run build`: Construye la app para producción
+- `npm run eject`: Expone la configuración de webpack
+
+## Testing
+
+El proyecto incluye:
+- Tests unitarios con Jest
+- Tests de integración
+- Tests de componentes con React Testing Library
+
+Para ejecutar las pruebas:
+```bash
+npm test
+```
 
 ## Despliegue
 
-Para construir la aplicación para producción:
+1. Construye la aplicación:
+```bash
+npm run build
+```
 
-```npm run build```
-
-Los archivos de producción estarán en el directorio `build/`
-
-## Pruebas
-
-Para ejecutar las pruebas:
-
-```npm test```
+2. Los archivos de producción estarán en `build/`
 
 ## Contribuir
 
-1. Haz fork del proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork del proyecto
+2. Crea tu rama de feature (`git checkout -b feature/NuevaCaracteristica`)
+3. Commit de cambios (`git commit -m 'Añade nueva característica'`)
+4. Push a la rama (`git push origin feature/NuevaCaracteristica`)
+5. Crea un Pull Request
+
+## Guía de Estilo
+
+- Utiliza ESLint y Prettier para el formato del código
+- Sigue las convenciones de nombres de React
+- Documenta los componentes principales
+- Escribe tests para nuevas características
+
+## Soporte
+
+Para reportar bugs o solicitar nuevas características, por favor:
+1. Revisa los issues existentes
+2. Crea un nuevo issue con detalles específicos
+3. Incluye pasos para reproducir el problema
+
 
 
 ## Contacto

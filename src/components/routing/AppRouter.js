@@ -18,7 +18,7 @@ export const AppRouter = ({
   if (!authToken) {
     return (
       <Routes>
-        <Route path="/*" element={<LoginComponent setAuthToken={setAuthToken} setCurrentUser={setCurrentUser} />} />
+        <Route path="/*" element={<LoginComponent />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );

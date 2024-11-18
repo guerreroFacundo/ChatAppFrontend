@@ -3,10 +3,19 @@ import axios from 'axios';
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const authService = {
-    login: async (credentials) => {
-        const response = await axios.post(`${BASE_URL}/api/auth/login`, credentials);
+    login: async (username,password) => {
+        const response = await axios.post(`${BASE_URL}/api/users/login`, {
+            username,
+            password,
+        }, {
+            headers: {
+                'Content-Type': 'application/json', // Asegúrate de que se envíe como JSON
+            },
+        });
+
         return response.data;
     },
+
 
     logout: () => {
         localStorage.removeItem('authToken');
