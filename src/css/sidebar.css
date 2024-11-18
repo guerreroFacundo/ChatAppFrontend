@@ -1,0 +1,49 @@
+.sidebar {
+    width: 350px;
+    background-color: #1f1f1f;
+    padding: 16px;
+    overflow-y: auto;
+    border-right: 1px solid #333;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.sidebar h6 {
+    color: #fff;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.sidebar .search-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.sidebar .search-bar input {
+    margin-left: 8px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.chat-item {
+    padding: 10px;
+    cursor: pointer;
+    background-color: transparent;
+    border-radius: 8px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.chat-item:hover {
+    background-color: #333;
+}
+
+.chat-item.selected-chat {
+    background-color: #333;
+}
