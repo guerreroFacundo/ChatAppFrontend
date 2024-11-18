@@ -30,7 +30,7 @@ Una aplicación de chat en tiempo real construida con React y Material-UI que pe
 ## Configuración del Proyecto
 
 1. Clona el repositorio:
-```git clone https://github.com/tu-usuario/chat-application.git```
+```git clone [https://github.com/tu-usuario/chat-application.git](https://github.com/guerreroFacundo/ChatAppFrontend.git)```
 
 2. Navega al directorio del proyecto:
 ```cd chat-application```
