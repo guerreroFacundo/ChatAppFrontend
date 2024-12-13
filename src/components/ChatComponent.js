@@ -6,7 +6,7 @@ import StyledPaper from './StyledPaper';
 import MessageList from './MessageList';
 import InputArea from './InputArea';
 import ReplyBox from './ReplyBox';
-import LoadingIndicator from './LoadingIndicator';
+import { api } from '../services/api';
 
 const darkTheme = createTheme({
   palette: {
@@ -44,23 +44,19 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
       const fetchData = async () => {
         setLoading(true);
         try {
-          // Fetch messages
-          const messagesResponse = await axios.get(`${baseURL}/obtenerMensajes`, {
-            params: { userId: currentUser.id, contactId: selectedChat },
-          });
-          setMessages(messagesResponse.data);
 
-          // Fetch contact name
-          const chatResponse = await axios.get(`${baseURL}/chats`, {
-            params: { userId: currentUser.id },
-          });
-          const chat = chatResponse.data.find((chat) => chat.id === selectedChat);
-          if (chat) {
-            setContactName(chat.username);
+          try {
+            // Fetch messages using api.js
+            const messagesResponse = await api.getMessages(currentUser.id, selectedChat, currentUser.authToken);
+            setMessages(messagesResponse);
+          } catch (error) {
+            console.error('Error al obtener los datos de los mensajes:', error);
+            throw new Error("Error al obtener los datos de los mensajes", error);
           }
-          scrollToBottom();
+          
+          
         } catch (error) {
-          console.error('Error al obtener los datos:', error);
+          throw new Error(error);
         } finally {
           setLoading(false);
         }
@@ -95,18 +91,17 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
     try {
-      const response = await axios.post(`${baseURL}/send`, null, {
-        params: {
-          senderId: currentUser.id,
-          receiverId: selectedChat,
-          content: newMessage,
-          replyTo: replyingTo ? replyingTo.id : null,
-        },
-      });
-      setMessages((prevMessages) => [...prevMessages, response.data]);
+      const response = await api.sendMessage(
+        currentUser.id,
+        selectedChat,
+        newMessage,
+        replyingTo ? replyingTo.id : null,
+        currentUser.authToken);
+      setMessages((prevMessages) => [...prevMessages, response]);
       setNewMessage('');
       setReplyingTo(null);
     } catch (error) {
@@ -116,8 +111,9 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
 
   const handleDeleteMessage = async (messageId) => {
     try {
-      await axios.delete(`${baseURL}/delete/${messageId}`);
-      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== messageId));
+      await api.deleteMessage(messageId,currentUser.id,currentUser.authToken);
+      // Actualiza el estado para eliminar el mensaje de la lista
+      setMessages((prevMessages) => prevMessages.filter(msg => msg.id !== messageId));
     } catch (error) {
       console.error('Error al eliminar el mensaje:', error);
     }

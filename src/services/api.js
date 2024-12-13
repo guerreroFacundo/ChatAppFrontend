@@ -30,8 +30,22 @@ export const api = {
         return response.data;
     },
 
-    sendMessage: async (messageData, authToken) => {
-        const response = await axios.post(`${BASE_URL}/api/messages/enviar`, messageData, {
+    sendMessage: async (senderId, receiverId, content, replyTo, authToken) => {
+        const response = await axios.post(`${BASE_URL}/api/messages/send`, null, {
+            params: {
+                senderId,
+                receiverId,
+                content,
+                replyTo
+            },
+            headers: { Authorization: `Bearer ${authToken}` }
+        });
+        return response.data;
+    },
+
+    deleteMessage: async (messageId, userId, authToken) => {
+        const response = await axios.delete(`${BASE_URL}/api/messages/delete`, {
+            params: { messageId, userId },
             headers: { Authorization: `Bearer ${authToken}` }
         });
         return response.data;

@@ -10,6 +10,7 @@ body {
     height: 100%;
     overflow: hidden;
     /* Evita barras de desplazamiento en el body */
+    background: linear-gradient(180deg, hsl(0, 0%, 11%) 0%, rgb(28, 28, 29) 100%);
 }
 
 #root {
