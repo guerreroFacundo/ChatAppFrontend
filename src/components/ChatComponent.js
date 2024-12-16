@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
 import { Client } from '@stomp/stompjs';
-import { ThemeProvider, createTheme, Box, CircularProgress } from '@mui/material';
+import { ThemeProvider, createTheme, Box, CircularProgress, Snackbar } from '@mui/material';
 import StyledPaper from './StyledPaper';
 import MessageList from './MessageList';
 import InputArea from './InputArea';
@@ -32,38 +31,29 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [contactName, setContactName] = useState('');
   const [stompClient, setStompClient] = useState(null);
   const [replyingTo, setReplyingTo] = useState(null);
-
-  const baseURL = `${process.env.REACT_APP_API_BASE_URL}/api/messages`;
   const messagesEndRef = useRef(null);
+
 
   useEffect(() => {
     if (currentUser && selectedChat) {
       const fetchData = async () => {
         setLoading(true);
         try {
-
-          try {
-            // Fetch messages using api.js
-            const messagesResponse = await api.getMessages(currentUser.id, selectedChat, currentUser.authToken);
-            setMessages(messagesResponse);
-          } catch (error) {
-            console.error('Error al obtener los datos de los mensajes:', error);
-            throw new Error("Error al obtener los datos de los mensajes", error);
-          }
-          
-          
+          const messagesResponse = await api.getMessages(currentUser.id, selectedChat, currentUser.authToken);
+          setMessages(messagesResponse);
         } catch (error) {
-          throw new Error(error);
+          console.error('Error al obtener los datos de los mensajes:', error);
+          setError("Error al obtener los datos de los mensajes");
         } finally {
           setLoading(false);
         }
       };
       fetchData();
 
-      // Setup WebSocket connection
       const client = new Client({
         brokerURL: process.env.REACT_APP_WS_URL,
         onConnect: () => {
@@ -106,16 +96,17 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
       setReplyingTo(null);
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);
+      setError("Error al enviar el mensaje");
     }
   };
 
   const handleDeleteMessage = async (messageId) => {
     try {
-      await api.deleteMessage(messageId,currentUser.id,currentUser.authToken);
-      // Actualiza el estado para eliminar el mensaje de la lista
+      await api.deleteMessage(messageId, currentUser.id, currentUser.authToken);
       setMessages((prevMessages) => prevMessages.filter(msg => msg.id !== messageId));
     } catch (error) {
       console.error('Error al eliminar el mensaje:', error);
+      setError("Error al eliminar el mensaje");
     }
   };
 
@@ -124,10 +115,15 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
     scrollToBottom();
   };
 
+  const handleCloseSnackbar = () => {
+    setError(null);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <StyledPaper sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <Box sx={{ flexGrow: 1, overflowY: 'scroll', scrollbarWidth: 'none', '&::-webkit-scrollbar': { display: 'none' } }}>
+          {loading && <CircularProgress />}
           <MessageList
             messages={messages}
             loading={loading}
@@ -142,6 +138,12 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
           newMessage={newMessage}
           setNewMessage={setNewMessage}
           handleSendMessage={handleSendMessage}
+        />
+        <Snackbar
+          open={!!error}
+          autoHideDuration={6000}
+          onClose={handleCloseSnackbar}
+          message={error}
         />
       </StyledPaper>
     </ThemeProvider>

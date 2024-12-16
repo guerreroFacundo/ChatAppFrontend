@@ -20,7 +20,7 @@ const MessageBubble = ({ message }) => {
                 </Typography>
             </Box>
             <Typography variant="caption" display="block">
-                {new Date(message.timestamp).toLocaleString()}
+                {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </Typography>
         </Paper>
     );
