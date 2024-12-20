@@ -4,8 +4,9 @@ import TextField from '@mui/material/TextField';
 const StyledTextField = styled(TextField)(({ theme }) => ({
     flexGrow: 1,
     marginRight: theme.spacing(1),
+    backgroundColor: 'transparent', // Make background transparent to match MessageBubble
     '& .MuiOutlinedInput-root': {
-        borderRadius: '20px',
+        borderRadius: '8px',
         '& fieldset': {
             borderColor: theme.palette.divider,
         },
@@ -15,6 +16,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
         '&.Mui-focused fieldset': {
             borderColor: theme.palette.primary.main,
         },
+    },
+    '& .MuiInputBase-input': {
+        whiteSpace: 'pre-wrap', // Permitir el salto de línea
+        overflowWrap: 'break-word', // Permitir el ajuste de palabras
     },
 }));
 

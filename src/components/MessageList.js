@@ -19,13 +19,13 @@ const MessageList = ({ messages, loading, currentUser, setReplyingTo, handleDele
                     const previousMessageDate = index > 0 ? new Date(messages[index - 1].timestamp).toLocaleDateString() : null;
 
                     if (messageDate !== previousMessageDate) {
-                    acc.push(
-                        <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }} key={`date-${message.id}`}>
-                            <Typography variant="caption" color="text.secondary">
-                                {messageDate}
-                            </Typography>
-                        </Box>
-                    );
+                        acc.push(
+                            <Box sx={{ display: 'flex', justifyContent: 'center', my: 2 }} key={`date-${message.id}`}>
+                                <Typography variant="caption" color="text.secondary">
+                                    {messageDate}
+                                </Typography>
+                            </Box>
+                        );
                     }
 
                     acc.push(
@@ -35,6 +35,7 @@ const MessageList = ({ messages, loading, currentUser, setReplyingTo, handleDele
                             currentUser={currentUser}
                             setReplyingTo={setReplyingTo}
                             handleDeleteMessage={handleDeleteMessage}
+                            messages={messages}
                         />
                     );
 

@@ -37,7 +37,6 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
   const [replyingTo, setReplyingTo] = useState(null);
   const messagesEndRef = useRef(null);
 
-
   useEffect(() => {
     if (currentUser && selectedChat) {
       const fetchData = async () => {
@@ -133,12 +132,14 @@ const ChatComponent = ({ currentUser, selectedChat }) => {
             handleDeleteMessage={handleDeleteMessage}
           />
         </Box>
-        <ReplyBox replyingTo={replyingTo} setReplyingTo={setReplyingTo} />
-        <InputArea
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          handleSendMessage={handleSendMessage}
-        />
+        <Box className="p-4 bg-grey">
+          <ReplyBox replyingTo={replyingTo} setReplyingTo={setReplyingTo} />
+          <InputArea
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            handleSendMessage={handleSendMessage}
+          />
+        </Box>
         <Snackbar
           open={!!error}
           autoHideDuration={6000}

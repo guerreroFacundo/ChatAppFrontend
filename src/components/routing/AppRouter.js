@@ -1,7 +1,8 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import LoginComponent from '../LoginComponent';
-import ChatLayout from '../ChatLayout';
+import React from 'react'; 
+import { Routes, Route, Navigate } from 'react-router-dom'; 
+import LoginComponent from '../LoginComponent'; 
+import RegisterComponent from '../RegisterComponent'; // Import the new component
+import ChatLayout from '../ChatLayout'; 
 
 export const AppRouter = ({ 
   authToken, 
@@ -19,6 +20,7 @@ export const AppRouter = ({
     return (
       <Routes>
         <Route path="/*" element={<LoginComponent />} />
+        <Route path="/register" element={<RegisterComponent />} /> {/* Add the new route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );

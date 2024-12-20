@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { TextField, Button, Container, Typography, Box, Card, CardContent, InputLabel } from '@mui/material';
+import React, { useState } from 'react';
+import { Alert } from '@mui/material'; // Import Alert component
+import { TextField, Button, Container, Typography, Card, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/auth';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import '../css/animatedBackground.css'; // Importa el CSS del fondo animado
 
 const darkTheme = createTheme({
     palette: {
@@ -26,28 +25,23 @@ const darkTheme = createTheme({
     },
 });
 
-function LoginComponent() {
+const RegisterComponent = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [email, setEmail] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); // State for error message
     const navigate = useNavigate();
-    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await authService.login(username, password);
-            const { token, userId, type } = response;
-            const fullToken = `${type} ${token}`;
-
-            await login(fullToken, userId, username);
-            navigate('/chat-layout');
+            await authService.register({ username, password, email });
+            navigate('/login');
         } catch (error) {
-            console.log(error);
             if (error.response && error.response.data) {
-                setError(error.response.data);
+                setErrorMessage(error.response.data); // Set specific error message from backend
             } else {
-                setError('Error desconocido. Intenta nuevamente más tarde.');
+                setErrorMessage('Registration failed. Please try again.'); // Set generic error message
             }
         }
     };
@@ -57,48 +51,56 @@ function LoginComponent() {
             <Container component="main" maxWidth="xs" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h5" align="center">Iniciar Sesión</Typography>
+                        <Typography variant="h5" align="center">Registrarse</Typography>
                         <form onSubmit={handleSubmit}>
-                            <InputLabel required>Usuario</InputLabel>
+                            {errorMessage && <Alert severity="error">{errorMessage}</Alert>} {/* Display error message */}
                             <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
                                 fullWidth
+                                label="Usuario"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                sx={{ marginBottom: 2 }} // Add margin to separate inputs
                             />
-                            <InputLabel required>Contraseña</InputLabel>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
                                 required
                                 fullWidth
+                                label="Contraseña"
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                sx={{ marginBottom: 2 }} // Add margin to separate inputs
                             />
-                            {error && <Typography color="error">{error}</Typography>}
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                label="Email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                             <Button type="submit" fullWidth variant="contained" color="primary" sx={{ marginTop: 2 }}>
-                                Iniciar Sesión
+                                Registrarse
                             </Button>
                         </form>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            color="secondary"
-                            onClick={() => navigate('/register')}
+                        <Button 
+                            fullWidth 
+                            variant="outlined" 
+                            color="secondary" 
+                            onClick={() => navigate('/login')}
                             sx={{ marginTop: 2 }} // Add margin to separate the buttons
                         >
-                            Registrarse
+                            Volver a Iniciar Sesión
                         </Button>
                     </CardContent>
                 </Card>
             </Container>
         </ThemeProvider>
     );
-}
+};
+export default RegisterComponent;
 
-export default LoginComponent;

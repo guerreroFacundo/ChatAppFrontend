@@ -5,7 +5,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     borderRadius: '20px',
     minWidth: '48px',
     height: '48px',
-    padding: '0 16px',
+    padding: '0 12px',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
     '&:hover': {
